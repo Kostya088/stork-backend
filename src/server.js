@@ -8,6 +8,8 @@ import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
+import diaryRoutes from './routes/diaryRoutes.js';
+
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
@@ -16,10 +18,10 @@ app.use(logger);
 app.use(express.json());
 app.use(cookieParser());
 
+app.use('/api/diary', diaryRoutes);
+
 app.use(notFoundHandler);
-
 app.use(errors());
-
 app.use(errorHandler);
 
 await connectMongoDB();
