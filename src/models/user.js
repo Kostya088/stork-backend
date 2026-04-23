@@ -33,7 +33,7 @@ const userSchema = new Schema(
       default: null,
     },
     dueDate: {
-      type: Date,
+      type: String,
       default: null,
     },
     theme: {
@@ -60,7 +60,6 @@ const userSchema = new Schema(
     versionKey: false,
   },
 );
-
 
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();

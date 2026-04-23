@@ -53,7 +53,7 @@ export const updateCurrentUser = async (req, res) => {
   }
 
   if (dueDate !== undefined) {
-    updateFields.dueDate = dueDate === null ? null : new Date(dueDate);
+    updateFields.dueDate = dueDate;
   }
 
   const user = await User.findOneAndUpdate({ _id: req.user._id }, updateFields, {
