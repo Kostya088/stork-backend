@@ -11,7 +11,9 @@ import cors from 'cors';
 import authRouter from './routes/authRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import emotionRouter from './routes/emotionRoutes.js';
 import diaryRoutes from './routes/diaryRoutes.js';
+
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
@@ -24,6 +26,7 @@ app.use(weeksRoutes);
 app.use(authRouter);
 app.use(taskRoutes);
 app.use(userRoutes);
+app.use(emotionRouter);
 app.use(diaryRoutes);
 
 app.use(notFoundHandler);

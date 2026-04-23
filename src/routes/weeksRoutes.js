@@ -21,10 +21,6 @@ router.get(
   getBabyDevelopment,
 );
 
-router.get(
-  '/weeks/:weekNumber/mom-body',
-  authenticate,
-  getMomBody,
-);
+router.get('/weeks/:weekNumber/mom-body', authenticate, getMomBody);
 
 export default router;
