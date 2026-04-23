@@ -22,8 +22,21 @@ export const taskIdSchema = {
 
 export const createTaskSchema = {
   [Segments.BODY]: Joi.object().keys({
-    name: Joi.string().min(1).required(),
-    date: Joi.date().required(),
+    name: Joi.string()
+  .trim()
+  .min(1)
+  .max(96)
+  .required(),
+    date: Joi.string()
+  .pattern(/^\d{4}-\d{2}-\d{2}$/)
+  .custom((value, helpers) => {
+    const today = new Date().toISOString().split('T')[0];
+    if (value < today) {
+      return helpers.message('Date cannot be in the past');
+    }
+    return value;
+  })
+  .required(),
   }),
 };
 
