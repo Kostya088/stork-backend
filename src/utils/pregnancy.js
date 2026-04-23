@@ -1,3 +1,8 @@
+import { ONE_DAY } from '../constants/time.js';
+
+const MAX_WEEK = 42;
+
+/** Єдина базова функція для роботи з датами */
 import { ONE_DAY, MAX_WEEK } from '../constants/time.js';
 
 export const getDiffDaysToDue = (dueDate) => {
@@ -9,6 +14,7 @@ export const getDiffDaysToDue = (dueDate) => {
   return Math.ceil((due - now) / ONE_DAY);
 };
 
+/** Розрахунок тижня вагітності */
 export const getWeekNumberFromDueDate = (dueDate) => {
   const diffDays = getDiffDaysToDue(dueDate);
 
@@ -21,10 +27,12 @@ export const getWeekNumberFromDueDate = (dueDate) => {
   return Math.min(Math.max(weekNumber, 1), MAX_WEEK);
 };
 
+/** К-сть днів до пологів (якщо є dueDate) */
 export const getDaysUntilDue = (dueDate) => {
   return getDiffDaysToDue(dueDate);
 };
 
+/** Fallback якщо немає dueDate */
 export const getDaysUntilDueFallback = (weekNumber) => {
   if (!weekNumber) return null;
 
