@@ -9,15 +9,14 @@ import {
 
 export const getPublicWeekInfo = async (req, res) => {
   try {
-    const weekNumber = req.query.week
-      ? parseInt(req.query.week, 10)
-      : 1;
+    const weekNumber = req.query.week ? parseInt(req.query.week, 10) : 1;
 
     if (weekNumber < 1 || weekNumber > 42) {
-    const weekNumber = parseInt(req.query.week, 10);
+      const weekNumber = parseInt(req.query.week, 10);
 
-    if (!weekNumber || weekNumber < 1 || weekNumber > 42) {
-      return res.status(400).json({ error: 'Invalid week number' });
+      if (!weekNumber || weekNumber < 1 || weekNumber > 42) {
+        return res.status(400).json({ error: 'Invalid week number' });
+      }
     }
 
     const [momState, babyState] = await Promise.all([
@@ -27,7 +26,7 @@ export const getPublicWeekInfo = async (req, res) => {
 
     return res.status(200).json({
       weekNumber,
-      daysUntilDue: null,
+      daysUntilDue: getDaysUntilDueFallback(weekNumber),
       tipForMom: momState?.comfortTips?.[0]?.tip || null,
       babyInfo: babyState
         ? {
@@ -81,32 +80,10 @@ export const getCurrentWeekInfo = async (req, res) => {
 };
 
 export const getBabyDevelopment = async (req, res) => {
-  const weekNumber = parseInt(req.params.weekNumber, 10);
-
-  if (!weekNumber || weekNumber < 1 || weekNumber > 40) {
-    return res.status(400).json({ error: 'Invalid week number' });
-  }
-
-  const babyState = await BabyState.findOne({ weekNumber });
-
-  if (!babyState) {
-    return res.status(404).json({ error: 'Baby state not found' });
-  }
-
-  return res.status(200).json({
-    weekNumber,
-    development: babyState.babyDevelopment,
-    size: babyState.babySize,
-    weight: babyState.babyWeight,
-    analogy: babyState.analogy,
-    image: babyState.image,
-  });
   try {
-    const { dueDate } = req.user;
+    const weekNumber = parseInt(req.params.weekNumber, 10);
 
-    const weekNumber = getWeekNumberFromDueDate(dueDate);
-
-    if (!weekNumber) {
+    if (Number.isNaN(weekNumber) || weekNumber < 1 || weekNumber > 42) {
       return res.status(400).json({ error: 'Invalid week number' });
     }
 
@@ -131,11 +108,9 @@ export const getBabyDevelopment = async (req, res) => {
 
 export const getMomBody = async (req, res) => {
   try {
-    const { dueDate } = req.user;
+    const weekNumber = parseInt(req.params.weekNumber, 10);
 
-    const weekNumber = getWeekNumberFromDueDate(dueDate);
-
-    if (!weekNumber) {
+    if (Number.isNaN(weekNumber) || weekNumber < 1 || weekNumber > 42) {
       return res.status(400).json({ error: 'Invalid week number' });
     }
 
@@ -147,12 +122,11 @@ export const getMomBody = async (req, res) => {
 
     return res.status(200).json({
       weekNumber,
-      symptoms: momState.symptoms,
-      bodyChanges: momState.bodyChanges,
+      symptoms: momState.feelings?.states ?? [],
+      bodyChanges: momState.feelings?.sensationDescr ?? null,
       tips: momState.comfortTips,
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-};
 };
