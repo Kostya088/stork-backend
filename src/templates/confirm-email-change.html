@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirm email change</title>
+  </head>
+
+  <body>
+    <h1 style="color: blue">Hello, {{username}}!</h1>
+    <p>Someone is trying to change your email to <strong>{{newEmail}}</strong>.</p>
+    <p>If this was you, click the button below to confirm:</p>
+    <a href="{{link}}" style="text-decoration: none;">
+      <button style="background-color: blue; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">
+        YES, change email
+      </button>
+    </a>
+    <p>If you didn't request this, please ignore this email.</p>
+  </body>
+</html>

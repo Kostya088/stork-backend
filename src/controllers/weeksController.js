@@ -7,7 +7,7 @@ import {
   getDaysUntilDueFallback,
 } from '../utils/pregnancy.js';
 
-export const getPublicWeekInfo = async (req, res) => {
+export const getPublicWeeks = async (req, res) => {
   try {
     const weekNumber = req.query.week ? parseInt(req.query.week, 10) : 1;
 
@@ -41,7 +41,7 @@ export const getPublicWeekInfo = async (req, res) => {
   }
 };
 
-export const getCurrentWeekInfo = async (req, res) => {
+export const getCurrentWeeks = async (req, res) => {
   try {
     const { dueDate, gender } = req.user;
 
@@ -79,7 +79,7 @@ export const getCurrentWeekInfo = async (req, res) => {
   }
 };
 
-export const getBabyDevelopment = async (req, res) => {
+export const getBabyInfo = async (req, res) => {
   try {
     const weekNumber = parseInt(req.params.weekNumber, 10);
 
@@ -106,7 +106,7 @@ export const getBabyDevelopment = async (req, res) => {
   }
 };
 
-export const getMomBody = async (req, res) => {
+export const getMomInfo = async (req, res) => {
   try {
     const weekNumber = parseInt(req.params.weekNumber, 10);
 

@@ -10,22 +10,6 @@ export async function getAllEntries(req, res) {
   res.status(200).json(entries);
 }
 
-// // GET by id
-// export async function getEntryById(req, res) {
-//   const { id } = req.params;
-
-//   const entry = await Diary.findOne({
-//     _id: id,
-//     userId: req.user._id,
-//   });
-
-//   if (!entry) {
-//     throw createHttpError(404, 'Entry not found');
-//   }
-
-//   res.status(200).json(entry);
-// }
-
 // CREATE
 export async function createEntry(req, res) {
   const entry = await Diary.create({
