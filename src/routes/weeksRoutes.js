@@ -144,8 +144,8 @@ router.get('/weeks', getPublicWeeks);
 
 router.get('/weeks/me', authenticate, getCurrentWeeks);
 
-router.get('/weeks/baby/:week', authenticate, getBabyInfo);
+router.get('/weeks/baby/:weekNumber', authenticate, getBabyInfo);
 
-router.get('/weeks/mom/:week', authenticate, getMomInfo);
+router.get('/weeks/mom/:weekNumber', authenticate, getMomInfo);
 
 export default router;
