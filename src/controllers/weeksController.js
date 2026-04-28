@@ -33,7 +33,7 @@ export const getPublicWeeks = async (req, res) => {
             babySize: babyState.babySize,
             babyWeight: babyState.babyWeight,
             babyActivity: babyState.babyActivity,
-            development: babyState.babyDevelopment,
+            babyDevelopment: babyState.babyDevelopment,
           }
         : null,
       tipForMom: momState?.comfortTips?.[0]?.tip || null,
@@ -62,19 +62,20 @@ export const getCurrentWeeks = async (req, res) => {
     ]);
 
     return res.status(200).json({
+      gender,
       weekNumber,
       daysUntilDue,
-      tipForMom: momState?.comfortTips?.[0]?.tip || null,
       babyInfo: babyState
         ? {
-            gender,
             analogy: babyState.analogy,
             image: babyState.image,
-            development: babyState.babyDevelopment,
-            size: babyState.babySize,
-            weight: babyState.babyWeight,
+            babySize: babyState.babySize,
+            babyWeight: babyState.babyWeight,
+            babyActivity: babyState.babyActivity,
+            babyDevelopment: babyState.babyDevelopment,
           }
         : null,
+      tipForMom: momState?.comfortTips?.[0]?.tip || null,
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });
