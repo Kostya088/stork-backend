@@ -7,6 +7,16 @@ import {
   getDaysUntilDueFallback,
 } from '../utils/pregnancy.js';
 
+
+const getDailyMomTip = (comfortTips = []) => {
+  if (!comfortTips.length) return null;
+
+  const dayIndex = new Date().getDay();
+  const tipIndex = dayIndex % comfortTips.length;
+
+  return comfortTips[tipIndex]?.tip || null;
+};
+
 export const getPublicWeeks = async (req, res) => {
   try {
     const weekNumber = req.query.week ? parseInt(req.query.week, 10) : 1;
@@ -36,7 +46,7 @@ export const getPublicWeeks = async (req, res) => {
             babyDevelopment: babyState.babyDevelopment,
           }
         : null,
-      tipForMom: momState?.comfortTips?.[0]?.tip || null,
+      tipForMom: getDailyMomTip(momState?.comfortTips),
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -75,7 +85,7 @@ export const getCurrentWeeks = async (req, res) => {
             babyDevelopment: babyState.babyDevelopment,
           }
         : null,
-      tipForMom: momState?.comfortTips?.[0]?.tip || null,
+      tipForMom: getDailyMomTip(momState?.comfortTips),
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });
