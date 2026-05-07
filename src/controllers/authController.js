@@ -175,3 +175,48 @@ export const resetPassword = async (req, res) => {
     message: 'Password reset successfully',
   });
 };
+
+export const loginWithGoogle = async (req, res) => {
+  const { token } = req.body;
+
+  const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw createHttpError(401, 'Invalid Google token');
+  }
+
+  const profile = await response.json();
+  const { email, name, picture } = profile;
+
+  if (!email) {
+    throw createHttpError(400, 'Email not provided by Google');
+  }
+
+  let user = await User.findOne({ email });
+  let isNewUser = false;
+
+  if (!user) {
+    const randomPassword = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10);
+    const hashPassword = await bcrypt.hash(randomPassword, 10);
+
+    user = await User.create({
+      email,
+      name: name || 'Google User',
+      password: hashPassword,
+      avatar: picture || undefined,
+    });
+    isNewUser = true;
+  }
+
+  await Session.findOneAndDelete({ userId: user._id });
+
+  const session = await createSession(user._id);
+
+  await setSessionCookies(res, session);
+
+  res.status(200).json({ user, isNewUser });
+};

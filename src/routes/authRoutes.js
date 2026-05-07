@@ -163,6 +163,32 @@
  *               $ref: '#/components/schemas/Error'
  */
 
+/**
+ * @swagger
+ * /auth/google:
+ *   post:
+ *     summary: Login or register with Google access token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *             properties:
+ *               token:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Validation error or Email not provided
+ *       401:
+ *         description: Invalid Google token
+ */
+
 import { Router } from 'express';
 import {
   loginUser,
@@ -171,6 +197,7 @@ import {
   registerUser,
   requestResetEmail,
   resetPassword,
+  loginWithGoogle,
 } from '../controllers/authController.js';
 import { celebrate } from 'celebrate';
 import {
@@ -178,6 +205,7 @@ import {
   registerUserSchema,
   requestResetEmailSchema,
   resetPasswordSchema,
+  loginWithGoogleSchema,
 } from '../validations/authValidation.js';
 import { authenticate } from '../middleware/authenticate.js';
 
@@ -201,6 +229,12 @@ router.post(
   '/auth/reset-password',
   celebrate(resetPasswordSchema),
   resetPassword,
+);
+
+router.post(
+  '/auth/google',
+  celebrate(loginWithGoogleSchema),
+  loginWithGoogle,
 );
 
 export default router;
